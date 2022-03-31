@@ -29,7 +29,7 @@ public class TicTacToe {
             System.out.print("Insira a coluna: ");
             coluna = sc.nextInt();
         }
-        matriz[linha][coluna] = jogador;
+        matriz[linha-1][coluna-1] = jogador;
         }
 
     public boolean jogadaValida(int linha, int coluna){

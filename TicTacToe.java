@@ -21,6 +21,20 @@ public class TicTacToe {
         int linha = sc.nextInt();
         System.out.print("Insira a coluna: ");
         int coluna = sc.nextInt();
+        while (!this.jogadaValida(linha, coluna)) {
+            this.mostrar();
+            System.out.println("Jogada inválida");
+            System.out.print("Insira a linha: ");
+            linha = sc.nextInt();
+            System.out.print("Insira a coluna: ");
+            coluna = sc.nextInt();
+        }
+        matriz[linha][coluna] = jogador;
+        }
+
+    public boolean jogadaValida(int linha, int coluna){
+        if (matriz[linha-1][coluna-1] == "-") return true;
+        return false;
     }
 
 
@@ -108,15 +122,10 @@ public class TicTacToe {
             }
         }while (jogo.gameOver() == false);
 
+        System.out.println("Fim de jogo!");
+
         if (jogo.gameTie() == true){
             System.out.println("EMPATOU!");
-        }
-        if (jogo.gameWon() == true){
-            if (jogo.winnerIs() == "x"){
-                System.out.println("Jogador1 venceu!");
-            } else{
-                System.out.println("Jogador2 venceu!");
-            }
         }
     }
 }

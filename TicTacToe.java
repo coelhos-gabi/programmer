@@ -4,12 +4,12 @@ import java.util.Scanner;
 
 public class TicTacToe {
 
-    String[][] matriz = {{"-","-","-"},{"-","-","-"},{"-","-","-"}};
+    String[][] tabuleiro = {{"-","-","-"},{"-","-","-"},{"-","-","-"}};
 
-    public void mostrar(){
-        for (int i = 0; i < matriz.length; i++){
-            for (int j = 0; j < matriz.length; j++){
-                System.out.print(matriz[i][j]);
+    public void mostrarTabuleiro(){
+        for (int i = 0; i < tabuleiro.length; i++){
+            for (int j = 0; j < tabuleiro.length; j++){
+                System.out.print(tabuleiro[i][j]);
             }
             System.out.println();
         }
@@ -21,13 +21,27 @@ public class TicTacToe {
         int linha = sc.nextInt();
         System.out.print("Insira a coluna: ");
         int coluna = sc.nextInt();
+
+        while (!this.jogadaValida(linha, coluna)) {
+            this.mostrarTabuleiro();
+            System.out.println("Jogada inválida");
+            System.out.print("Insira a linha: ");
+            linha = sc.nextInt();
+            System.out.print("Insira a coluna: ");
+            coluna = sc.nextInt();
+        }
+        tabuleiro[linha-1][coluna-1] = jogador;
+        }
+
+    public boolean jogadaValida(int linha, int coluna){
+        if (tabuleiro[linha-1][coluna-1].equals("-")) return true;
+        return false;
     }
 
-
     public boolean gameTie(){
-        for (int i = 0; i < matriz.length; i++){
-            for (int j = 0; j < matriz.length; j++){
-                if (matriz[i][j] == "-"){
+        for (int i = 0; i < tabuleiro.length; i++){
+            for (int j = 0; j < tabuleiro.length; j++){
+                if (tabuleiro[i][j].equals("-")){
                     return false;
                 }
             }
@@ -36,87 +50,56 @@ public class TicTacToe {
     }
 
     public boolean gameWon(){
-        for (int linha = 0; linha < matriz.length; linha++){
-            if (matriz[linha][0] != "-"){
-                if (matriz[linha][0] == matriz[linha][1] && matriz[linha][0] == matriz[linha][2]){
+        for (int linha = 0; linha < tabuleiro.length; linha++){
+            if (!tabuleiro[linha][0].equals("-")){
+                if (tabuleiro[linha][0].equals(tabuleiro[linha][1]) &&
+                        tabuleiro[linha][0].equals(tabuleiro[linha][2])){
                     return true;
                 }
             }
         }
-        for (int coluna = 0; coluna < matriz.length; coluna++){
-            if (matriz[0][coluna] != "-"){
-                if (matriz[0][coluna] == matriz[1][coluna] && matriz[0][coluna] == matriz[2][coluna]){
+        for (int coluna = 0; coluna < tabuleiro.length; coluna++){
+            if (!tabuleiro[0][coluna].equals("-")){
+                if (tabuleiro[0][coluna].equals(tabuleiro[1][coluna]) &&
+                        tabuleiro[0][coluna].equals(tabuleiro[2][coluna])){
                     return true;
                 }
             }
         }
         return false;
     }
-
-    public String winnerIs(){
-        String player;
-
-        for (int linha = 0; linha < matriz.length; linha++){
-            if (matriz[linha][0] != "-"){
-                if (matriz[linha][0] == matriz[linha][1] && matriz[linha][0] == matriz[linha][2]){
-                    return matriz[linha][0];
-                }
-            }
-        }
-        for (int coluna = 0; coluna < matriz.length; coluna++){
-            if (matriz[0][coluna] != "-"){
-                if (matriz[0][coluna] == matriz[1][coluna] && matriz[0][coluna] == matriz[2][coluna]){
-                    return matriz[0][coluna];
-                }
-            }
-        }
-        return "";
-    }
-
-    public boolean gameOver(){
-        if (this.gameWon() == true){
-            return true;
-        }
-        if (this.gameTie() == true){
-            return true;
-        }
-        return false;
-    }
-
 
     public static void main(String[] args) {
         TicTacToe jogo = new TicTacToe();
         String jogador1 = "x";
         String jogador2 = "o";
-        jogo.mostrar();
-        do{
+        System.out.println("################");
+        System.out.println("JOGO DA VELHA");
+        jogo.mostrarTabuleiro();
+
+        while (true) {
             jogo.jogada(jogador1);
-            jogo.mostrar();
-            if (jogo.gameWon() == true){
+            jogo.mostrarTabuleiro();
+            if (jogo.gameWon()) {
                 break;
             }
-            if (jogo.gameTie() == true){
+            if (jogo.gameTie()) {
                 break;
             }
             jogo.jogada(jogador2);
-            jogo.mostrar();
-            if (jogo.gameWon() == true){
+            jogo.mostrarTabuleiro();
+            if (jogo.gameWon()) {
                 break;
             }
-            if (jogo.gameTie() == true){
+            if (jogo.gameTie()) {
                 break;
             }
-        }while (jogo.gameOver() == false);
+        }
 
-        if (jogo.gameTie() == true){
+        if (jogo.gameTie()){
             System.out.println("EMPATOU!");
         }
-        if (jogo.gameWon() == true){
-            if (jogo.winnerIs() == "x"){
-                System.out.println("Jogador1 venceu!");
-            } else{
-                System.out.println("Jogador2 venceu!");
-            }
-        }
+
+        System.out.println("Fim de jogo!");
     }
 }
